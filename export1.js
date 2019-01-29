@@ -4,17 +4,10 @@ function init() {
 var fftSize = 128;
 //var fftSize = 44100;
 const layer= new Audio();
-
-layer.src = '/sdcard/osc.wav' ;
-//layer.src = '/sdcard/r2tard2.wav' ;
-//layer.src = '/sdcard/r2tard2nosweep.wav' ;
-//layer.src = '/sdcard/me2d2first.wav' ;
-// r.37 ish for perfect align
-//layer.src = '/sdcard/me2d2nd.wav' ;
-// r 37 ish
-//layer.src = '/sdcard/me2d2nosweep.wav' ;
-//layer.src = '/sdcard/dubblackholesun.mp3' ;
-//layer.src = '/sdcard/uhm.wav' ;
+// uncomment for local android install
+//layer.src = '/sdcard/osc.wav' ;
+//then comment out next line
+layer.src = 'gloom/osc.mp3' ;	
 const ctx = new AudioContext();
 const source = ctx.createMediaElementSource(layer); 
 const analyser = ctx.createAnalyser();
