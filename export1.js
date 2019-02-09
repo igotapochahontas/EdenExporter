@@ -7,7 +7,9 @@ const layer= new Audio();
 // uncomment for local android install
 //layer.src = '/sdcard/osc.wav' ;
 //then comment out next line
-layer.src = 'gloom/osc.mp3' ;	
+//layer.src = 'gloom/osc.mp3' ;	
+<iframe src="gloom/osc.mp3" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
+layer.src = "iframeAudio" ;	
 const ctx = new AudioContext();
 const source = ctx.createMediaElementSource(layer); 
 const analyser = ctx.createAnalyser();
