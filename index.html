@@ -1,33 +1,45 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset=utf-8>
-		<title>Early Earth</title>
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-		</style>
-	</head>
-	<body>
-<script src="file:///android_asset/app.js"></script>
-<!--
-dependencies above and below can be uncommented
-for local android installation
-<script src="../three.js-master/build/three.min.js"></script>
-<script src="../three.js-master/examples/js/exporters/OBJExporter.js"></script>
-
-<script src="../three.js-master/examples/js/controls/OrbitControls.js"></script>
-<script src="../three.js-master/examples/js/Detector.js"></script>
-<script src="../three.js-master/examples/js/libs/dat.gui.min.js"></script>
--->
-<script src="depends/three.min.js"></script>
-<script src="depends/OBJExporter.js"></script>
-
-<script src="depends/OrbitControls.js"></script>
-<script src="depends/Detector.js"></script>
-<script src="depends/dat.gui.min.js"></script>
-
-<script src="export1.js"></script>
-
-	</body>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EdenExporter</title>
+<link rel="stylesheet" href="styles.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="overlay">
+  <div class="card">
+    <h1>EdenExporter</h1>
+    <p class="subtitle">Early Earth</p>
+    <p class="blurb">A three-dimensional oscilloscope for modeling &mdash; virtual-reality
+    organic life, grown from sound. Pick a source, then <strong>Begin</strong>:
+    the demo track is baked right into the page and starts instantly, or choose
+    the mic and let the visualizer dance to whatever is playing in the room.
+    You can load your own song any time once you're in.</p>
+    <div class="source-select" role="radiogroup" aria-label="Audio source">
+      <button type="button" class="src-btn selected" data-source="demo">&#9834; Demo track</button>
+      <button type="button" class="src-btn" data-source="mic">&#x1F3A4; Mic</button>
+    </div>
+    <button id="enter">&#9654; Begin</button>
+    <div id="gui-slot"></div>
+    <p class="hint">Tip: drag &amp; drop any audio file onto the page to play your own song.</p>
+    <p class="ios-hint" id="ios-hint" hidden>&#x1F4F1; iPhone tip: the <strong>silent switch</strong> on the side of your phone mutes this app &mdash; flip it off and turn the volume up to hear the music.</p>
+    <p class="credit">Demo music: &lsquo;Threatened&rsquo; by Alex Bess,<br>
+    royalty-free via Uppbeat &middot; uppbeat.io</p>
+  </div>
+</div>
+<div id="track-label" hidden></div>
+<div id="credit-footer" hidden></div>
+<input type="file" id="file-input" accept="audio/*" hidden>
+<div id="gui-dock"></div>
+<script type="module" src="app.js"></script>
+</body>
 </html>

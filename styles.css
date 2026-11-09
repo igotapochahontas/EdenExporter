@@ -1,0 +1,205 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #05070c;
+  color: #e8e4da;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+canvas {
+  display: block;
+  touch-action: none; /* gestures belong to the canvas (OrbitControls binds there);
+                         the rest of the page keeps default touch behavior */
+}
+
+/* Start overlay (autoplay policy: AudioContext needs a user gesture). */
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 6, 10, 0.88);
+  z-index: 10;
+  transition: opacity 0.4s ease;
+  overflow-y: auto; /* the card now holds description + params; scroll on short screens */
+}
+
+#overlay.gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#overlay .card {
+  text-align: center;
+  max-width: 420px;
+  width: calc(100vw - 2.5rem);
+  box-sizing: border-box;
+  margin: auto; /* centers in the flex overlay, yet still scrolls when tall */
+  padding: 2.5rem 2rem;
+  border: 1px solid #1e2a3a;
+  border-radius: 12px;
+  background: #0b1018;
+  box-shadow: 0 0 60px rgba(0, 255, 0, 0.06);
+}
+
+#overlay h1 {
+  margin: 0 0 0.2rem;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+}
+
+#overlay .subtitle {
+  margin: 0 0 1rem;
+  color: #00ff88;
+  font-style: italic;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+#overlay .blurb {
+  color: #9aa3ad;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+#overlay #enter {
+  margin-top: 1rem;
+  padding: 0.8rem 2.2rem;
+  min-height: 52px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #04140a;
+  background: #00ff88;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#overlay #enter:hover { background: #4dffab; }
+#overlay #enter:disabled { opacity: 0.6; cursor: default; }
+
+/* Audio source selector: demo track vs mic — the first tappable controls. */
+.source-select {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.2rem 0 0;
+}
+
+.src-btn {
+  flex: 1;
+  min-height: 52px;
+  padding: 0.6rem 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #9aa3ad;
+  background: #101722;
+  border: 2px solid #1e2a3a;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.src-btn.selected {
+  color: #04140a;
+  background: #00ff88;
+  border-color: #00ff88;
+}
+
+/* Parameter panel: in normal flow below the description on the intro card —
+   never absolutely positioned over it. (lil-gui's own fixed positioning is
+   disabled via the container option; these rules are belt-and-braces.) */
+#gui-slot { margin-top: 1.25rem; text-align: left; }
+#gui-slot .lil-gui.root {
+  position: static;
+  z-index: auto;
+  --width: 100%;
+}
+
+/* After Begin, the panel docks top-right over the scene (its old spot). */
+#gui-dock { display: none; }
+body.started #gui-dock {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 16px;
+  z-index: 6;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow-y: auto;
+}
+body.started #gui-dock .lil-gui.root {
+  position: static;
+  --width: 245px;
+}
+
+#overlay .ios-hint {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #e8b64c;
+}
+
+#overlay .hint {
+  margin-top: 1.2rem;
+  font-size: 0.8rem;
+  color: #5b6570;
+}
+
+#overlay .credit {
+  margin-top: 1.4rem;
+  font-size: 0.75rem;
+  color: #5b6570;
+  line-height: 1.6;
+}
+
+/* Persistent music attribution (unhidden once the overlay lifts). */
+#credit-footer {
+  position: fixed;
+  right: 12px;
+  bottom: 10px;
+  z-index: 5;
+  font-size: 0.7rem;
+  color: #5b6570;
+  pointer-events: none;
+}
+
+/* Now-playing label. */
+#track-label {
+  position: fixed;
+  top: 12px;
+  left: 14px;
+  z-index: 5;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  color: #cfe3d4;
+  background: rgba(10, 16, 24, 0.72);
+  border: 1px solid #1e2a3a;
+  border-radius: 999px;
+  pointer-events: none;
+  max-width: 60vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Drag-and-drop highlight. */
+body.dragover::after {
+  content: "drop the song to play it";
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  letter-spacing: 0.1em;
+  color: #00ff88;
+  background: rgba(4, 10, 6, 0.82);
+  border: 3px dashed #00ff88;
+  pointer-events: none;
+}
